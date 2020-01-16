@@ -1,0 +1,10 @@
+
+---
+- name: Verify
+  hosts: all
+  become: no
+  gather_facts: no
+
+  tasks:
+    - name: check bash version
+      command: terraform -version|awk '{ print $2 }'|sed "s/v//g"

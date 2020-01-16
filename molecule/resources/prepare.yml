@@ -1,0 +1,30 @@
+---
+- name: Prepare
+  hosts: all
+  gather_facts: no
+  become: yes
+
+  roles:
+    - role: bootstrap
+      bootstrap_wait_for_host: yes
+    - role: basetools
+      vars:
+        _basetools_packages:
+          default:
+            - ntpdate
+          Debian:
+            - net-tools
+            - unzip
+            - gzip
+            - apt-transport-https
+            - ntpdate
+            - curl
+            - wget
+            - jq
+            - git
+            - dstat
+            - strace
+            - powertop
+            - i7z
+            - iperf
+            - gnupg2

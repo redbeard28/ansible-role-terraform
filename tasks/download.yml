@@ -1,0 +1,21 @@
+---
+- name: "{{ ansible_distribution | lower }} | {{ ansible_distribution_release }} - Download terraform archive Linux 32 bits"
+  get_url:
+    url: https://releases.hashicorp.com/terraform/{{ terraform_version }}/terraform_{{ terraform_version }}_linux_386.zip
+    dest: /tmp/terraform-{{terraform_version}}.zip
+    checksum: sha256:https://releases.hashicorp.com/terraform/{{ terraform_version }}/terraform_{{ terraform_version }}_SHA256SUMS
+  when: "'32' in ansible_architecture and 'Linux' == ansible_system"
+
+- name: "{{ ansible_distribution | lower }} | {{ ansible_distribution_release }} - Download terraform archive Linux 64 bits"
+  get_url:
+    url: https://releases.hashicorp.com/terraform/{{ terraform_version }}/terraform_{{ terraform_version }}_linux_amd64.zip
+    dest: /tmp/terraform-{{terraform_version}}.zip
+    checksum: sha256:https://releases.hashicorp.com/terraform/{{ terraform_version }}/terraform_{{ terraform_version }}_SHA256SUMS
+  when: "'64' in ansible_architecture and 'Linux' == ansible_system"
+
+- name: "{{ ansible_distribution | lower }} | {{ ansible_distribution_release }} - Download terraform archive Linux 64 bits"
+  get_url:
+    url: https://releases.hashicorp.com/terraform/{{ terraform_version }}/terraform_{{ terraform_version }}_darwin_amd64.zip
+    dest: /tmp/terraform-{{terraform_version}}.zip
+    checksum: sha256:https://releases.hashicorp.com/terraform/{{ terraform_version }}/terraform_{{ terraform_version }}_SHA256SUMS
+  when: "'64' in ansible_architecture and 'Darwin' == ansible_system"
