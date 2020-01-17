@@ -12,8 +12,8 @@ lint:
 platforms:
   - name: "ansible-role-terraform-${image:-debian}-${tag:-buster}"
     image: "${namespace:-redbeard28}/${image:-debian}:${tag:-buster}"
-    pre_build_image: yes
-    privileged: True
+    pre_build_image: true
+    privileged: true
     volumes:
       - /sys/fs/cgroup:/sys/fs/cgroup:ro
 provisioner:
@@ -22,7 +22,7 @@ provisioner:
   playbooks:
     converge: ../resources/default.yml
     prepare: ../resources/prepare.yml
-#    verify: ../resources/verify.yml
+    # verify: ../resources/verify.yml
   lint:
     name: ansible-lint
 scenario:

@@ -1,10 +1,10 @@
 import os
 import pytest
-
 import testinfra.utils.ansible_runner
 
 testinfra_hosts = testinfra.utils.ansible_runner.AnsibleRunner(
     os.environ['MOLECULE_INVENTORY_FILE']).get_hosts('all')
+
 
 @pytest.mark.parametrize('pkg', [
     'python3',
@@ -33,15 +33,18 @@ def get_ansiblevars(host):
     print(ansible_vars)
     return ansible_vars
 
+
 # Verify if user terraform exist
-def test_passwd_file(host,get_ansiblevars):
+def test_passwd_file(host, get_ansiblevars):
     passwd = host.file("/etc/passwd")
     assert passwd.contains(get_ansiblevars['terraform_user'])
 
+
 # Verify if group terraform exist
-def test_group_file(host,get_ansiblevars):
+def test_group_file(host, get_ansiblevars):
     group = host.file("/etc/group")
     assert group.contains(get_ansiblevars['terraform_user'])
+
 
 # Verify if terraform_dir exist
 def test_terraform_dir_path(host, get_ansiblevars):
@@ -50,4 +53,3 @@ def test_terraform_dir_path(host, get_ansiblevars):
     assert config.exists
     assert config.user == get_ansiblevars['terraform_user']
     assert config.group == get_ansiblevars['terraform_user']
-
