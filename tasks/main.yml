@@ -27,16 +27,11 @@
     state: present
 
 - name: "{{ ansible_distribution | lower }} | {{ ansible_distribution_release }} - Unarchive Terraform archive"
-  shell: |
-    unzip /tmp/terraform-{{ terraform_version }}.zip -d "{{ terraform_dir }}"
+  unarchive:
+    src: "/tmp/terraform-{{terraform_version}}.zip"
+    dest: "{{ terraform_dir }}"
+    copy: false
   when: terraform_versions_match.rc != 0 or terraform_directory is changed
-#
-# - name: "{{ ansible_distribution | lower }} | {{ ansible_distribution_release }} - Unarchive Terraform archive"
-#   unarchive:
-#     src: /tmp/terraform-{{terraform_version}}.zip
-#     dest: "{{terraform_dir}}"
-#     copy: no
-#   when: terraform_versions_match.rc != 0 or terraform_directory is changed
 
 - name: "{{ ansible_distribution | lower }} | {{ ansible_distribution_release }} - Make terraform_user terraform directory owner"
   file:
