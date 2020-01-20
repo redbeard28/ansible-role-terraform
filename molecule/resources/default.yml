@@ -1,6 +1,8 @@
 ---
 - name: Converge
   hosts: all
-
+  become: true
+  vars:
+    remote_tmp: /tmp/.ansible-${USER}/tmp
   roles:
     - role: ansible-role-terraform

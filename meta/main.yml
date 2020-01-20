@@ -21,7 +21,7 @@ galaxy_info:
     - name: GenericUNIX
       versions:
         - all
-  categories:
+  galaxy_tags:
     - cloud
     - system
   dependencies:

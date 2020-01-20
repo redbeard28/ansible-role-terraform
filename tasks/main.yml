@@ -1,8 +1,18 @@
 ---
+- name: "{{ ansible_distribution | lower }} | {{ ansible_distribution_release }} - Update System"
+  apt:
+    update_cache: true
+  when: ansible_distribution == 'Debian'
+
+- name: "{{ ansible_distribution | lower }} | {{ ansible_distribution_release }} - Update System"
+  yum:
+    update_cache: true
+  when: ansible_distribution == 'CentOS' or ansible_distribution == 'RedHat'
+
 - name: "{{ ansible_distribution | lower }} | {{ ansible_distribution_release }} - Create terraform user"
   user:
     name: "{{ terraform_user }}"
-    password: "{{terraform_user_password}}"
+    password: "{{ terraform_user_password }}"
 
 - name: "{{ ansible_distribution | lower }} | {{ ansible_distribution_release }} - Create Terraform directory"
   file:
@@ -13,7 +23,9 @@
   register: terraform_directory
 
 - name: "{{ ansible_distribution | lower }} | {{ ansible_distribution_release }} - Check terraform version"
-  shell: "terraform version 2>&1 | head -n 1 | grep -q {{ terraform_version }}"
+  shell: |
+    set -o pipefail
+    terraform version 2>&1 | head -n 1 | grep -q '{{ terraform_version }}'
   failed_when: false
   changed_when: false
   register: terraform_versions_match
@@ -28,7 +40,7 @@
 
 - name: "{{ ansible_distribution | lower }} | {{ ansible_distribution_release }} - Unarchive Terraform archive"
   unarchive:
-    src: "/tmp/terraform-{{terraform_version}}.zip"
+    src: "/tmp/terraform-{{ terraform_version }}.zip"
     dest: "{{ terraform_dir }}"
     copy: false
   when: terraform_versions_match.rc != 0 or terraform_directory is changed
